@@ -109,26 +109,49 @@ export function PasswordForm({ isOpen, onClose, onSubmit, editEntry }: PasswordF
     return 'bg-destructive';
   };
 
+  const getStrengthTextColor = () => {
+    if (strength.score >= 70) return 'text-success';
+    if (strength.score >= 40) return 'text-warning';
+    return 'text-destructive';
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-md bg-card border-border">
+      <DialogContent className="sm:max-w-lg bg-card border-border">
         <DialogHeader>
-          <DialogTitle>{editEntry ? 'Edit Password' : 'Add New Password'}</DialogTitle>
+          <DialogTitle className="text-xl">{editEntry ? 'Edit Password' : 'Add New Password'}</DialogTitle>
           <DialogDescription>
-            {editEntry ? 'Update your password details' : 'Securely store a new password'}
+            {editEntry ? 'Update your password details' : 'Securely store a new password in your vault'}
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="name">Name *</Label>
-            <Input
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="e.g., Gmail, Netflix"
-              className="bg-secondary/50"
-            />
+        <form onSubmit={handleSubmit} className="space-y-5 mt-2">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="name">Name *</Label>
+              <Input
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="e.g., Gmail"
+                className="bg-secondary/50 h-11"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="category">Category</Label>
+              <Select value={category} onValueChange={(v) => setCategory(v as PasswordCategory)}>
+                <SelectTrigger className="bg-secondary/50 h-11">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {Object.entries(categoryLabels).map(([key, label]) => (
+                    <SelectItem key={key} value={key}>
+                      {label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           <div className="space-y-2">
@@ -138,7 +161,7 @@ export function PasswordForm({ isOpen, onClose, onSubmit, editEntry }: PasswordF
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="your@email.com"
-              className="bg-secondary/50"
+              className="bg-secondary/50 h-11"
             />
           </div>
 
@@ -152,7 +175,7 @@ export function PasswordForm({ isOpen, onClose, onSubmit, editEntry }: PasswordF
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter password"
-                  className="bg-secondary/50 pr-20 font-mono"
+                  className="bg-secondary/50 pr-20 font-mono h-11"
                 />
                 <div className="absolute right-2 top-1/2 -translate-y-1/2 flex gap-1">
                   <Button
@@ -187,10 +210,7 @@ export function PasswordForm({ isOpen, onClose, onSubmit, editEntry }: PasswordF
                       style={{ width: `${strength.score}%` }}
                     />
                   </div>
-                  <span className={`text-xs font-medium ${
-                    strength.score >= 70 ? 'text-success' :
-                    strength.score >= 40 ? 'text-warning' : 'text-destructive'
-                  }`}>
+                  <span className={`text-xs font-medium ${getStrengthTextColor()}`}>
                     {strength.label}
                   </span>
                 </div>
@@ -205,26 +225,28 @@ export function PasswordForm({ isOpen, onClose, onSubmit, editEntry }: PasswordF
             )}
 
             {/* Generator Section */}
-            <div className="p-3 bg-secondary/30 rounded-lg space-y-3">
+            <div className="p-4 bg-secondary/30 rounded-xl space-y-3 border border-border">
               <div className="flex items-center gap-2">
                 <Wand2 className="w-4 h-4 text-primary" />
-                <span className="text-sm font-medium">Password Generator</span>
+                <span className="text-sm font-semibold">Password Generator</span>
               </div>
               
               <div className="flex gap-2">
                 <Button
                   type="button"
-                  variant={generatorType === 'random' ? 'default' : 'ghost'}
+                  variant={generatorType === 'random' ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => setGeneratorType('random')}
+                  className="flex-1"
                 >
                   Random
                 </Button>
                 <Button
                   type="button"
-                  variant={generatorType === 'passphrase' ? 'default' : 'ghost'}
+                  variant={generatorType === 'passphrase' ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => setGeneratorType('passphrase')}
+                  className="flex-1"
                 >
                   Passphrase
                 </Button>
@@ -247,7 +269,7 @@ export function PasswordForm({ isOpen, onClose, onSubmit, editEntry }: PasswordF
                       setWordCount(Math.max(3, Math.min(8, val)));
                     }
                   }}
-                  className="w-20 h-8 bg-secondary/50"
+                  className="w-20 h-9 bg-card"
                 />
                 <Button
                   type="button"
@@ -269,24 +291,8 @@ export function PasswordForm({ isOpen, onClose, onSubmit, editEntry }: PasswordF
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               placeholder="https://example.com"
-              className="bg-secondary/50"
+              className="bg-secondary/50 h-11"
             />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="category">Category</Label>
-            <Select value={category} onValueChange={(v) => setCategory(v as PasswordCategory)}>
-              <SelectTrigger className="bg-secondary/50">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {Object.entries(categoryLabels).map(([key, label]) => (
-                  <SelectItem key={key} value={key}>
-                    {label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
           </div>
 
           <div className="space-y-2">
@@ -301,8 +307,8 @@ export function PasswordForm({ isOpen, onClose, onSubmit, editEntry }: PasswordF
             />
           </div>
 
-          <div className="flex justify-end gap-2 pt-4">
-            <Button type="button" variant="ghost" onClick={onClose}>
+          <div className="flex justify-end gap-3 pt-4 border-t border-border">
+            <Button type="button" variant="outline" onClick={onClose}>
               Cancel
             </Button>
             <Button type="submit" disabled={isSubmitting}>

@@ -9,11 +9,11 @@ interface HeaderProps {
 
 export function Header({ onAddPassword, onCheckAll, isChecking }: HeaderProps) {
   return (
-    <header className="glass-card px-6 py-4 mb-6 sticky top-0 z-50">
+    <header className="glass-card-elevated px-6 py-4 mb-8 sticky top-4 z-50">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-primary/10 glow-primary">
-            <Shield className="w-6 h-6 text-primary" />
+          <div className="p-2.5 rounded-xl bg-gradient-to-br from-primary to-blue-600 shadow-lg shadow-primary/25">
+            <Shield className="w-6 h-6 text-primary-foreground" />
           </div>
           <div>
             <h1 className="text-xl font-bold text-foreground">VaultGuard</h1>
@@ -21,18 +21,18 @@ export function Header({ onAddPassword, onCheckAll, isChecking }: HeaderProps) {
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <Button
             variant="outline"
-            size="sm"
+            size="default"
             onClick={onCheckAll}
             disabled={isChecking}
-            className="hidden sm:flex"
+            className="hidden sm:flex h-10"
           >
             <RefreshCw className={`w-4 h-4 mr-2 ${isChecking ? 'animate-spin' : ''}`} />
-            {isChecking ? 'Checking...' : 'Check All'}
+            {isChecking ? 'Checking...' : 'Check Breaches'}
           </Button>
-          <Button onClick={onAddPassword} className="glow-primary">
+          <Button onClick={onAddPassword} className="h-10 shadow-lg shadow-primary/25">
             <Plus className="w-4 h-4 mr-2" />
             Add Password
           </Button>

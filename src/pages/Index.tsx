@@ -18,7 +18,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { Shield, Key, Wand2 } from 'lucide-react';
+import { Shield, Key, Sparkles } from 'lucide-react';
 
 const Index = () => {
   const {
@@ -68,23 +68,19 @@ const Index = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="flex flex-col items-center gap-4 animate-pulse">
-          <Shield className="w-16 h-16 text-primary animate-pulse-glow" />
-          <p className="text-muted-foreground">Loading vault...</p>
+        <div className="flex flex-col items-center gap-4">
+          <div className="p-4 rounded-2xl bg-primary/10 animate-pulse-subtle">
+            <Shield className="w-12 h-12 text-primary" />
+          </div>
+          <p className="text-muted-foreground font-medium">Loading vault...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Background Effects */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-      </div>
-
-      <div className="relative max-w-6xl mx-auto px-4 py-6">
+    <div className="min-h-screen bg-background gradient-bg">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
         <Header
           onAddPassword={handleAddPassword}
           onCheckAll={checkAllPasswords}
@@ -102,24 +98,24 @@ const Index = () => {
 
             {/* Tabs */}
             <Tabs defaultValue="passwords" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 bg-secondary/50">
-                <TabsTrigger value="passwords" className="flex items-center gap-2">
+              <TabsList className="grid w-full grid-cols-2 bg-secondary h-12 p-1 rounded-xl">
+                <TabsTrigger value="passwords" className="flex items-center gap-2 rounded-lg data-[state=active]:shadow-sm">
                   <Key className="w-4 h-4" />
                   Passwords ({passwords.length})
                 </TabsTrigger>
-                <TabsTrigger value="generator" className="flex items-center gap-2">
-                  <Wand2 className="w-4 h-4" />
+                <TabsTrigger value="generator" className="flex items-center gap-2 rounded-lg data-[state=active]:shadow-sm lg:hidden">
+                  <Sparkles className="w-4 h-4" />
                   Generator
                 </TabsTrigger>
               </TabsList>
-              <TabsContent value="passwords" className="mt-4">
+              <TabsContent value="passwords" className="mt-5">
                 <PasswordList
                   passwords={passwords}
                   onEdit={handleEditPassword}
                   onDelete={(id) => setDeleteConfirm(id)}
                 />
               </TabsContent>
-              <TabsContent value="generator" className="mt-4">
+              <TabsContent value="generator" className="mt-5 lg:hidden">
                 <PassphraseGenerator />
               </TabsContent>
             </Tabs>
